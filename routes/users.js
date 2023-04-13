@@ -7,23 +7,26 @@ let users = db.collection('users')
 
 router.get('/', async function(req, res, next) {
   let list = await users.list();
+  console.log(list);
   res.render("users", {users: list.results, host: process.env.host, username: process.env.username, password: process.env.password});
 });
 
 router.get('/:email', async function(req, res, next) {
-  let item = await users.item(req.params.email);
+  let item = await users.get(req.params.email);
   console.log(item);
-  res.render("userDetails", {user: item});
+  res.render("userDetails", {email: item.key, user: item.props});
 });
 
 router.get('/:email/work', async function(req, res, next) {
-  let item = await users.item(req.params.email).fragment("Work").get();
-  res.render("workDetails", {email: req.params.email, companyName: item.CompanyName, salary: item.Salary, currency: item.Currency});
+  let items = await users.item(req.params.email).fragment("Work").get();
+  var item = items[0];
+  res.render("workDetails", {email: req.params.email, companyName: item.props.CompanyName, salary: item.props.Salary, currency: item.props.Currency});
 });
 
 router.get('/:email/home', async function(req, res, next) {
-  let item = await users.item(req.params.email).fragment("Home").get();
-  res.render("homeDetails", {email: req.params.email, country: item.Country, city: item.City});
+  let items = await users.item(req.params.email).fragment("Home").get();
+  var item = items[0];
+  res.render("homeDetails", {email: req.params.email, country: item.props.Country, city: item.props.City});
 });
 
 router.post('/add', async function(req, res, next) {

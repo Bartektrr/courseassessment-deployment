@@ -10,15 +10,15 @@
         <div class="card">
             <div class="card-body">
               <h5 class="card-title">User</h5>
-              <p class="card-text"><b>Email:</b>EMAIL</p>
+              <p class="card-text"><b>Email:</b> <%=email%></p>
             </div>
             <ul class="list-group list-group-flush">
               <li class="list-group-item"><b>First Name:</b> <%=user.FirstName%></li>
-              <li class="list-group-item"><b>Last Name:</b><%=user.LastName%></li>
+              <li class="list-group-item"><b>Last Name:</b> <%=user.LastName%></li>
             </ul>
             <div class="card-body">
-              <a href="/<%='users/' + user.Key + '/work'%>" class="card-link">Work details</a>
-              <a href="/<%='users/' + user.Key + '/home'%>" class="card-link">Home details</a>
+              <a href="/<%='users/' + email + '/work'%>" class="card-link">Work details</a>
+              <a href="/<%='users/' + email + '/home'%>" class="card-link">Home details</a>
             </div>
           </div>
         </div>
