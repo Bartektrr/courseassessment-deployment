@@ -11,7 +11,7 @@
         <% users.forEach(function(user){ %>
             <div class="row">
                 <a href="/<%='users/' + user.key%>" class="list-group-item list-group-item-action col"><%=user.key%></a>
-                <button class="btn btn-danger col" onclick="sendDelete('<%=`http\:\/\/localhost:3000\/users\/` + user.key%>', '<%=username%>', '<%=password%>')"> Delete</button>    
+                <button class="btn btn-danger col" onclick="sendDelete('<%=`\/users\/` + user.key%>', '<%=username%>', '<%=password%>')"> Delete</button>    
             </div>
         <% });%>
         <script src="../javascripts/sendDelete.js"></script>   

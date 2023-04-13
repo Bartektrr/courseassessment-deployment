@@ -8,7 +8,7 @@ let users = db.collection('users')
 router.get('/', async function(req, res, next) {
   let list = await users.list();
   console.log(list);
-  res.render("users", {users: list.results, host: process.env.host, username: process.env.username, password: process.env.password});
+  res.render("users", {users: list.results, host: process.env.CYCLIC_URL, username: process.env.username, password: process.env.password});
 });
 
 router.get('/:email', async function(req, res, next) {
