@@ -5,8 +5,15 @@ async function sendDelete(url, username, password) {
         headers: {
             "Authorization": `Basic ${btoa(username + ':' + password)}`,
         }
-    });
-    const resData = 'resource deleted...';
-    location.reload()
-    return resData;
+    }).then((response) => {
+        if (response.ok) {
+            const resData = 'User deleted...';
+            location.reload()
+            return Promise.resolve(resData);    
+        }
+        return Promise.reject(response); 
+    })
+      .catch((response) => {
+        alert(response.statusText);
+      });;
 }

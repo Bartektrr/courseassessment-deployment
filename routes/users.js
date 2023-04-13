@@ -66,6 +66,7 @@ router.put('/:email', async function(req, res, next) {
 });
 
 router.delete('/:email', async function(req, res, next) {
+  console.log("OK")
   await users.delete(req.params.email);
   res.end();
 });
