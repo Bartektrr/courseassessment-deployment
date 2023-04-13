@@ -7,13 +7,11 @@ let users = db.collection('users')
 
 router.get('/', async function(req, res, next) {
   let list = await users.list();
-  console.log(list);
-  res.render("users", {users: list.results, host: process.env.CYCLIC_URL, username: process.env.username, password: process.env.password});
+  res.render("users", {users: list.results, host: process.env.CYCLIC_URL});
 });
 
 router.get('/:email', async function(req, res, next) {
   let item = await users.get(req.params.email);
-  console.log(item);
   res.render("userDetails", {email: item.key, user: item.props});
 });
 

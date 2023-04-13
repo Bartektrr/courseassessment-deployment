@@ -1,14 +1,10 @@
-async function sendDelete(url, username, password) {
+async function sendDelete(url) {
     console.log(url)
     const response = await fetch(url, {
         method: 'DELETE',
-        headers: {
-            "Authorization": `Basic ${btoa(username + ':' + password)}`,
-        }
     }).then((response) => {
         if (response.ok) {
             const resData = 'User deleted...';
-            location.reload()
             return Promise.resolve(resData);    
         }
         return Promise.reject(response); 
