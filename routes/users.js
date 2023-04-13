@@ -7,36 +7,63 @@ let users = db.collection('users')
 
 router.get('/', async function(req, res, next) {
   let list = await users.list();
-  res.send(list);
+  res.render("users", {users: list.results});
 });
 
-router.get('/:key', async function(req, res, next) {
-  let item = await users.get(req.params.key);
-  res.send(item);
+router.get('/:email', async function(req, res, next) {
+  let item = await users.item(req.params.email);
+  console.log(item);
+  res.render("userDetails", {user: item});
 });
 
-router.post('/', async function(req, res, next) {
-  const {email, firstName, lastName, age} = req.body;
-  await users.set(email, {
-    firstName: firstName,
-    secondName: lastName,
-    age: age
-  })
+router.get('/:email/work', async function(req, res, next) {
+  let item = await users.item(req.params.email).fragment("Work").get();
+  res.render("workDetails", {company: req.params.email, companyName: item.CompanyName, salary: item.Salary, currency: item.Currency});
+});
+
+router.get('/:email/home', async function(req, res, next) {
+  let item = await users.item(req.params.email).fragment("Home").get();
+  res.render("homeDetails", {email: req.params.email, country: item.Country, city: item.City});
+});
+
+router.post('/add', async function(req, res, next) {
+  const {Email, FirstName, LastName, CompanyName, Salary, Currency, Country, City} = req.body;
+  await users.set(Email, {
+    FirstName: FirstName,
+    LastName: LastName
+  });
+  await users.item(Email).fragment("Work").set({
+    CompanyName: CompanyName,
+    Salary: Salary,
+    Currency: Currency
+  });
+  await users.item(Email).fragment("Home").set({
+    Country: Country,
+    City: City
+  });
   res.end();
 });
 
-router.put('/', async function(req, res, next) {
-  const {email, firstName, lastName, age} = req.body;
-  await users.set(email, {
-    firstName: firstName,
-    secondName: lastName,
-    age: age
-  })
+router.put('/:email', async function(req, res, next) {
+  const {FirstName, LastName, CompanyName, Salary, Currency, Country, City} = req.body;
+  await users.set(req.params.email, {
+    FirstName: FirstName,
+    LastName: LastName
+  });
+  await users.item(req.params.email).fragment("Work").set({
+    CompanyName: CompanyName,
+    Salary: Salary,
+    Currency: Currency
+  });
+  await users.item(req.params.email).fragment("Home").set({
+    Country: Country,
+    City: City
+  });
   res.end();
 });
 
-router.delete('/:key', async function(req, res, next) {
-  await users.delete(req.params.key);
+router.delete('/:email', async function(req, res, next) {
+  await users.delete(req.params.email);
   res.end();
 });
 
