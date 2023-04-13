@@ -7,7 +7,7 @@ let users = db.collection('users')
 
 router.get('/', async function(req, res, next) {
   let list = await users.list();
-  res.render("users", {users: list.results});
+  res.render("users", {users: list.results, host: process.env.host, username: process.env.username, password: process.env.password});
 });
 
 router.get('/:email', async function(req, res, next) {
@@ -18,7 +18,7 @@ router.get('/:email', async function(req, res, next) {
 
 router.get('/:email/work', async function(req, res, next) {
   let item = await users.item(req.params.email).fragment("Work").get();
-  res.render("workDetails", {company: req.params.email, companyName: item.CompanyName, salary: item.Salary, currency: item.Currency});
+  res.render("workDetails", {email: req.params.email, companyName: item.CompanyName, salary: item.Salary, currency: item.Currency});
 });
 
 router.get('/:email/home', async function(req, res, next) {
